@@ -1,0 +1,11 @@
+{
+  "name": "limbo-core",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Panel web de estabilidad y rendimiento para Limbo Core (prototipo).",
+  "scripts": {
+    "build": "node scripts/build-static.mjs",
+    "start": "node scripts/serve-static.mjs"
+  }
+}

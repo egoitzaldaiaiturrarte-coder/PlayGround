@@ -1,0 +1,560 @@
+<!doctype html>
+<html lang="es" data-ready="false">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#070a0d">
+  <meta name="description" content="Limbo Core: panel de estabilidad, memoria y audio para Android. Prototipo de interfaz.">
+  <title>Limbo Core · Consola de estabilidad</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%23c8ff4d'/%3E%3Cpath d='M22 14v36h22v-8H31V14z' fill='%230a1005'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <svg class="sprite" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+    <symbol id="i-panel" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.6"/><rect x="14" y="3" width="7" height="7" rx="1.6"/><rect x="3" y="14" width="7" height="7" rx="1.6"/><rect x="14" y="14" width="7" height="7" rx="1.6"/></symbol>
+    <symbol id="i-cpu" viewBox="0 0 24 24"><rect x="5" y="5" width="14" height="14" rx="2"/><rect x="9" y="9" width="6" height="6" rx="1"/><path d="M9 2v3M15 2v3M9 19v3M15 19v3M2 9h3M2 15h3M19 9h3M19 15h3"/></symbol>
+    <symbol id="i-ram" viewBox="0 0 24 24"><rect x="3" y="7" width="18" height="10" rx="2"/><path d="M7 11v2M11 11v2M15 11v2M19 11v2M6 3v4M18 3v4M6 17v4M18 17v4"/></symbol>
+    <symbol id="i-list" viewBox="0 0 24 24"><path d="M9 6h12M9 12h12M9 18h12"/><circle cx="4" cy="6" r="1"/><circle cx="4" cy="12" r="1"/><circle cx="4" cy="18" r="1"/></symbol>
+    <symbol id="i-plug" viewBox="0 0 24 24"><path d="M12 22v-6M9 8V2M15 8V2M18 8v4a6 6 0 0 1-12 0V8z"/></symbol>
+    <symbol id="i-settings" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .34 1.87l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06A1.7 1.7 0 0 0 15 19.4a1.7 1.7 0 0 0-1 .6 1.7 1.7 0 0 0-.4 1.1V21a2 2 0 1 1-4 0v-.09A1.7 1.7 0 0 0 8.6 19.4a1.7 1.7 0 0 0-1.87.34l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.7 1.7 0 0 0 4.6 15a1.7 1.7 0 0 0-.6-1 1.7 1.7 0 0 0-1.1-.4H3a2 2 0 1 1 0-4h.09A1.7 1.7 0 0 0 4.6 8.6a1.7 1.7 0 0 0-.34-1.87l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.7 1.7 0 0 0 9 4.6a1.7 1.7 0 0 0 1-.6 1.7 1.7 0 0 0 .4-1.1V3a2 2 0 1 1 4 0v.09A1.7 1.7 0 0 0 15 4.6a1.7 1.7 0 0 0 1.87-.34l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.7 1.7 0 0 0 19.4 9c.1.38.3.73.6 1 .3.27.68.4 1.1.4H21a2 2 0 1 1 0 4h-.09a1.7 1.7 0 0 0-1.51.6z"/></symbol>
+    <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></symbol>
+    <symbol id="i-lock" viewBox="0 0 24 24"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></symbol>
+    <symbol id="i-bolt" viewBox="0 0 24 24"><path d="M13 2 3 14h8l-1 8 10-12h-8l1-8z"/></symbol>
+    <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></symbol>
+    <symbol id="i-play" viewBox="0 0 24 24"><path d="M7 4.5 20 12 7 19.5z"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12 4 4 10-10"/></symbol>
+    <symbol id="i-thermo" viewBox="0 0 24 24"><path d="M10 14.8V5a2 2 0 1 1 4 0v9.8a4 4 0 1 1-4 0z"/><path d="M12 9v6"/></symbol>
+    <symbol id="i-layers" viewBox="0 0 24 24"><path d="m12 3 9 5-9 5-9-5 9-5z"/><path d="m3 12 9 5 9-5M3 16l9 5 9-5"/></symbol>
+    <symbol id="i-terminal" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="m7 9 3 3-3 3M13 15h4"/></symbol>
+    <symbol id="i-refresh" viewBox="0 0 24 24"><path d="M20 11a8 8 0 1 0-2.3 5.7"/><path d="M20 4v7h-7"/></symbol>
+    <symbol id="i-link" viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7 0l2-2a5 5 0 0 0-7-7l-1 1"/><path d="M14 11a5 5 0 0 0-7 0l-2 2a5 5 0 0 0 7 7l1-1"/></symbol>
+    <symbol id="i-power" viewBox="0 0 24 24"><path d="M12 2v10"/><path d="M18.4 6.6a9 9 0 1 1-12.8 0"/></symbol>
+  </svg>
+
+  <div class="shell" id="app">
+    <aside class="rail">
+      <a class="brand" href="#panel" data-view="panel" aria-label="Limbo Core, ir al panel">
+        <span class="brand-mark">L</span>
+        <span class="brand-copy"><b>LIMBO</b><small>CORE</small></span>
+      </a>
+
+      <nav class="rail-nav" aria-label="Secciones">
+        <button class="nav-item is-active" data-view="panel" aria-current="page"><svg class="icon"><use href="#i-panel"/></svg><span>Panel</span></button>
+        <button class="nav-item" data-view="cpu"><svg class="icon"><use href="#i-cpu"/></svg><span>CPU</span></button>
+        <button class="nav-item" data-view="memory"><svg class="icon"><use href="#i-ram"/></svg><span>Memoria</span></button>
+        <button class="nav-item" data-view="processes"><svg class="icon"><use href="#i-list"/></svg><span>Procesos</span></button>
+        <button class="nav-item" data-view="integrations"><svg class="icon"><use href="#i-plug"/></svg><span>Integraciones</span></button>
+        <button class="nav-item" data-view="settings"><svg class="icon"><use href="#i-settings"/></svg><span>Ajustes</span></button>
+      </nav>
+
+      <div class="rail-foot">
+        <div class="rail-status"><span class="pulse"></span><span>Motor en primer plano</span></div>
+        <div class="rail-meta">v0.1 · prototipo de interfaz</div>
+      </div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <div class="device">
+          <span class="eyebrow">Dispositivo emparejado</span>
+          <div class="device-title">
+            <h1>Redmi Note 15 <span>4G</span></h1>
+            <span class="badge">ARM64</span>
+          </div>
+          <p class="device-meta">Kernel 6.12.30 · HyperOS 3 · 8 GB RAM</p>
+        </div>
+
+        <div class="top-status" aria-label="Estado del sistema">
+          <span class="chip chip--ok"><span class="pulse"></span>Shizuku <b>uid 2000</b></span>
+          <span class="chip chip--ok"><span class="pulse"></span>KernelSU <b>activo</b></span>
+          <span class="chip chip--warm"><svg class="icon"><use href="#i-thermo"/></svg><b>41.8 °C</b></span>
+        </div>
+
+        <div class="top-actions">
+          <span class="demo-pill">Vista previa</span>
+          <button class="icon-btn" id="open-settings" aria-label="Abrir ajustes"><svg class="icon"><use href="#i-settings"/></svg></button>
+          <div class="avatar" aria-hidden="true">RN</div>
+        </div>
+      </header>
+
+      <div class="mobile-status" aria-label="Estado del sistema">
+        <span class="chip chip--ok"><span class="pulse"></span>Shizuku</span>
+        <span class="chip chip--ok"><span class="pulse"></span>Root</span>
+        <span class="chip chip--warm"><svg class="icon"><use href="#i-thermo"/></svg>41.8 °C</span>
+      </div>
+
+      <div class="views">
+        <section class="view is-active" id="panel" data-view="panel" aria-labelledby="panel-title">
+          <section class="hero card">
+            <div class="hero-copy">
+              <span class="eyebrow">Perfil de ejecución</span>
+              <h2 id="panel-title">Estable</h2>
+              <p id="profile-desc">Prioriza latencia baja, RAM libre y cambios reversibles. El audio se precarga y el resto se desplaza a ZRAM.</p>
+
+              <div class="segmented" role="group" aria-label="Elegir perfil">
+                <button class="is-active" data-profile="stable">Estable</button>
+                <button data-profile="performance">Rendimiento</button>
+                <button data-profile="audio">Audio Lock</button>
+              </div>
+
+              <div class="hero-actions">
+                <button class="btn btn--primary" id="apply-profile">
+                  <svg class="icon"><use href="#i-play"/></svg>
+                  Aplicar perfil
+                </button>
+                <span class="hero-note" id="profile-note">Última aplicación: hace 2 min · watchdog armado</span>
+              </div>
+            </div>
+
+            <div class="score">
+              <div class="score-ring" id="score-ring" style="--score:97">
+                <div class="score-core">
+                  <b id="score-value">97</b>
+                  <span>estabilidad</span>
+                </div>
+              </div>
+              <div class="score-meta"><span class="pulse"></span><span id="score-meta-text">Sin tirones en 6 h</span></div>
+            </div>
+          </section>
+
+          <section class="stats" aria-label="Métricas en vivo">
+            <article class="stat card">
+              <div class="stat-top"><span>CPU</span><svg class="icon"><use href="#i-cpu"/></svg></div>
+              <div class="stat-number"><b data-stat="cpu">2.02</b><small>GHz</small></div>
+              <svg class="spark" viewBox="0 0 120 34" preserveAspectRatio="none" aria-hidden="true"><polyline data-spark="cpu" points=""/></svg>
+              <div class="stat-foot"><span class="dot dot--ok"></span><span>schedutil · 8 núcleos</span></div>
+            </article>
+
+            <article class="stat card">
+              <div class="stat-top"><span>RAM usada</span><svg class="icon"><use href="#i-ram"/></svg></div>
+              <div class="stat-number"><b data-stat="ram">68</b><small>%</small></div>
+              <svg class="spark spark--blue" viewBox="0 0 120 34" preserveAspectRatio="none" aria-hidden="true"><polyline data-spark="ram" points=""/></svg>
+              <div class="stat-foot"><span class="dot dot--ok"></span><span id="ram-foot">2.6 GB libres</span></div>
+            </article>
+
+            <article class="stat card">
+              <div class="stat-top"><span>ZRAM</span><svg class="icon"><use href="#i-layers"/></svg></div>
+              <div class="stat-number"><b data-stat="zram">37</b><small>%</small></div>
+              <svg class="spark spark--mint" viewBox="0 0 120 34" preserveAspectRatio="none" aria-hidden="true"><polyline data-spark="zram" points=""/></svg>
+              <div class="stat-foot"><span class="dot dot--ok"></span><span id="zram-foot">1.1 / 3.0 GB</span></div>
+            </article>
+
+            <article class="stat card">
+              <div class="stat-top"><span>Temperatura</span><svg class="icon"><use href="#i-thermo"/></svg></div>
+              <div class="stat-number"><b data-stat="temp">41.8</b><small>°C</small></div>
+              <svg class="spark spark--warm" viewBox="0 0 120 34" preserveAspectRatio="none" aria-hidden="true"><polyline data-spark="temp" points=""/></svg>
+              <div class="stat-foot"><span class="dot dot--ok"></span><span>margen térmico 18 °C</span></div>
+            </article>
+          </section>
+
+          <div class="grid-2">
+            <article class="card cluster-card">
+              <div class="card-head">
+                <div><span class="eyebrow">Procesador</span><h3>Clústeres y governor</h3></div>
+                <span class="tag tag--ok"><span class="dot"></span>root verificado</span>
+              </div>
+
+              <div class="cluster-list">
+                <div class="cluster">
+                  <div class="cluster-head"><span>Prime <small>2 núcleos</small></span><b id="freq-prime">2.40 GHz</b></div>
+                  <div class="meter"><i id="bar-prime" style="width:78%"></i></div>
+                  <div class="cluster-meta"><span>min 1.80</span><span>max 2.40</span><span>schedutil</span></div>
+                </div>
+                <div class="cluster">
+                  <div class="cluster-head"><span>Rendimiento <small>2 núcleos</small></span><b id="freq-big">1.90 GHz</b></div>
+                  <div class="meter"><i id="bar-big" style="width:64%"></i></div>
+                  <div class="cluster-meta"><span>min 1.20</span><span>max 1.90</span><span>schedutil</span></div>
+                </div>
+                <div class="cluster">
+                  <div class="cluster-head"><span>Eficiencia <small>4 núcleos</small></span><b id="freq-little">1.42 GHz</b></div>
+                  <div class="meter"><i id="bar-little" style="width:52%"></i></div>
+                  <div class="cluster-meta"><span>min 0.90</span><span>max 1.42</span><span>schedutil</span></div>
+                </div>
+              </div>
+
+              <p class="card-note"><svg class="icon"><use href="#i-lock"/></svg> Escribir <code>scaling_max_freq</code> exige root. Shizuku se queda en uid 2000 y no puede tocar <code>/sys/.../cpufreq</code>.</p>
+            </article>
+
+            <article class="card memory-card">
+              <div class="card-head">
+                <div><span class="eyebrow">Memoria</span><h3>RAM rápida + ZRAM</h3></div>
+                <span class="tag tag--accent">swap activo</span>
+              </div>
+
+              <div class="mem-head"><b id="mem-free">2.6 GB</b><span>libres de 8.0 GB</span></div>
+              <div class="stack" aria-label="Distribución de memoria">
+                <i class="seg seg--sys" id="seg-sys"></i>
+                <i class="seg seg--audio" id="seg-audio"></i>
+                <i class="seg seg--apps" id="seg-apps"></i>
+                <i class="seg seg--free" id="seg-free"></i>
+              </div>
+              <ul class="legend">
+                <li><i class="key key--sys"></i>Sistema <b id="legend-sys">1.4</b></li>
+                <li><i class="key key--audio"></i>Audio fijo <b id="legend-audio">1.9</b></li>
+                <li><i class="key key--apps"></i>Apps <b id="legend-apps">1.7</b></li>
+                <li><i class="key key--free"></i>Libre <b id="legend-free">3.0</b></li>
+              </ul>
+
+              <div class="zram-row"><span>ZRAM swap</span><b id="zram-value">1.1 / 3.0 GB</b></div>
+              <div class="meter meter--thin"><i id="zram-bar" style="width:37%"></i></div>
+              <div class="kv-row"><span>swappiness <b id="swappiness">100</b></span><span>vfs_cache_pressure <b>120</b></span></div>
+            </article>
+          </div>
+
+          <div class="grid-2">
+            <article class="card">
+              <div class="card-head">
+                <div><span class="eyebrow">Audio primero</span><h3>Precarga anclada</h3></div>
+                <span class="tag tag--accent">mlock</span>
+              </div>
+              <p class="muted">Se carga al inicio, se ancla en memoria lenta y deja la RAM rápida para el primer plano. Sin force-stop y sin tocar apps del sistema.</p>
+
+              <ul class="app-list" id="preload-list">
+                <li><span class="app-ico">AC</span><div><b>AcustiCall</b><small>audio nativo · proceso fijo</small></div><span class="state state--ok">fija</span></li>
+                <li><span class="app-ico app-ico--blue">LT</span><div><b>Control de Latencia</b><small>audio nativo · proceso fijo</small></div><span class="state state--ok">fija</span></li>
+                <li><span class="app-ico app-ico--mint">AC</span><div><b>AnyClaw</b><small>Linux embebido · precarga</small></div><span class="state state--info">precarga</span></li>
+                <li><span class="app-ico app-ico--warm">TX</span><div><b>Termux</b><small>shell · bajo demanda</small></div><span class="state">bajo demanda</span></li>
+              </ul>
+
+              <div class="mini-kv"><span>Reservado <b id="reserved">2.4 GB</b></span><span>mlock <b>activo</b></span></div>
+            </article>
+
+            <article class="card">
+              <div class="card-head">
+                <div><span class="eyebrow">Segundo plano</span><h3>Procesos cuestionables</h3></div>
+                <span class="tag tag--warm" id="proc-count">3 limitados</span>
+              </div>
+
+              <div class="process-list" id="process-list">
+                <div class="process"><span class="proc-state proc-state--warn"></span><div class="proc-name"><b>com.miui.powerkeeper</b><small>PID 1421 · 84 MB · 4.2% CPU</small></div><button class="mini-btn" data-proc>Limitar</button></div>
+                <div class="process"><span class="proc-state proc-state--warn"></span><div class="proc-name"><b>com.miui.analytics</b><small>PID 2188 · 46 MB · 1.8% CPU</small></div><button class="mini-btn" data-proc>Limitar</button></div>
+                <div class="process"><span class="proc-state proc-state--warn"></span><div class="proc-name"><b>com.xiaomi.mipicks</b><small>PID 3310 · 112 MB · 0.9% CPU</small></div><button class="mini-btn" data-proc>Limitar</button></div>
+                <div class="process"><span class="proc-state proc-state--ok"></span><div class="proc-name"><b>com.termux</b><small>PID 4021 · 68 MB · protegido</small></div><span class="state state--ok">fija</span></div>
+              </div>
+
+              <p class="card-note"><svg class="icon"><use href="#i-shield"/></svg> Solo se limitan paquetes prescindibles. El sistema, la telefonía y el audio nunca entran en la lista.</p>
+            </article>
+          </div>
+
+          <article class="card integrations-card">
+            <div class="card-head">
+              <div><span class="eyebrow">Ecosistema</span><h3>Integraciones</h3></div>
+              <span class="tag tag--info">bus local</span>
+            </div>
+            <div class="integration-grid">
+              <button class="integration is-on" data-integration="shizuku"><span class="int-ico">SH</span><span class="int-copy"><b>Shizuku</b><small>shell · uid 2000</small></span><span class="state state--ok">activo</span></button>
+              <button class="integration is-on" data-integration="kernelsu"><span class="int-ico int-ico--mint">KS</span><span class="int-copy"><b>KernelSU</b><small>root · su</small></span><span class="state state--ok">activo</span></button>
+              <button class="integration" data-integration="ghostlock"><span class="int-ico int-ico--warm">GL</span><span class="int-copy"><b>GhostLock</b><small>externo · kernel</small></span><span class="state">externo</span></button>
+              <button class="integration is-on" data-integration="termux"><span class="int-ico int-ico--warm">TX</span><span class="int-copy"><b>Termux</b><small>shell compartida</small></span><span class="state state--ok">conectado</span></button>
+              <button class="integration is-on" data-integration="anyclaw"><span class="int-ico">AC</span><span class="int-copy"><b>AnyClaw</b><small>Linux embebido</small></span><span class="state state--ok">conectado</span></button>
+              <button class="integration is-on" data-integration="acusticall"><span class="int-ico int-ico--blue">AC</span><span class="int-copy"><b>AcustiCall</b><small>audio nativo</small></span><span class="state state--ok">anclada</span></button>
+              <button class="integration is-on" data-integration="latency"><span class="int-ico int-ico--blue">LT</span><span class="int-copy"><b>Latencia</b><small>control nativo</small></span><span class="state state--ok">anclada</span></button>
+              <button class="integration" data-integration="api"><span class="int-ico int-ico--mint">API</span><span class="int-copy"><b>API local</b><small>Unix socket · JSON</small></span><span class="state">vincular</span></button>
+            </div>
+          </article>
+
+          <div class="grid-2">
+            <article class="card">
+              <div class="card-head">
+                <div><span class="eyebrow">Protección</span><h3>Guardarraíles</h3></div>
+                <span class="tag tag--ok">watchdog</span>
+              </div>
+              <ul class="check-list">
+                <li><svg class="icon"><use href="#i-check"/></svg><span>Todo cambio se revierte al reiniciar si no se confirma.</span></li>
+                <li><svg class="icon"><use href="#i-check"/></svg><span>Sin force-stop a telefonía, sistema ni apps de audio.</span></li>
+                <li><svg class="icon"><use href="#i-check"/></svg><span>Root opcional: sin <code>su</code>, degrada a Shizuku + perfiles.</span></li>
+                <li><svg class="icon"><use href="#i-check"/></svg><span>Un watchdog restaura governor y ZRAM si hay un cuelgue.</span></li>
+              </ul>
+              <button class="btn btn--ghost" id="restore-defaults"><svg class="icon"><use href="#i-refresh"/></svg>Restaurar valores</button>
+            </article>
+
+            <article class="card log-card">
+              <div class="card-head">
+                <div><span class="eyebrow">Consola</span><h3>Actividad</h3></div>
+                <span class="tag">en vivo</span>
+              </div>
+              <ol class="log" id="log">
+                <li><time>12:46:02</time><span class="log-ok">watchdog</span> estado estable</li>
+                <li><time>12:46:01</time><span class="log-ok">shizuku</span> binder conectado · uid 2000</li>
+                <li><time>12:45:58</time><span class="log-ok">root</span> KernelSU responde a su</li>
+                <li><time>12:45:55</time><span class="log-info">preload</span> AcustiCall anclada en memoria</li>
+                <li><time>12:45:54</time><span class="log-info">preload</span> Control de Latencia anclada</li>
+                <li><time>12:45:52</time><span class="log-warm">zram</span> 3.0 GB configurados · lz4</li>
+              </ol>
+            </article>
+          </div>
+
+          <p class="disclaimer">Prototipo de interfaz. No ejecuta exploits, no obtiene root ni modifica el dispositivo. GhostLock es una herramienta externa; esta vista solo representa su estado.</p>
+        </section>
+
+        <section class="view" data-view="cpu" aria-labelledby="cpu-title">
+          <div class="view-head">
+            <span class="eyebrow">Procesador</span>
+            <h2 id="cpu-title">Frecuencia y governor</h2>
+            <p>Ajusta los clústeres con escritura directa en sysfs. Requiere root real; Shizuku no alcanza estos nodos.</p>
+          </div>
+
+          <div class="grid-2">
+            <article class="card">
+              <div class="card-head">
+                <div><span class="eyebrow">Política</span><h3>Governor activo</h3></div>
+                <span class="tag tag--ok">schedutil</span>
+              </div>
+              <div class="segmented segmented--wide" role="group" aria-label="Governor">
+                <button class="is-active">schedutil</button>
+                <button>performance</button>
+                <button>powersave</button>
+                <button>conservative</button>
+              </div>
+
+              <div class="slider-group">
+                <label for="cpu-max">Frecuencia máxima <output id="cpu-max-out">2.40 GHz</output></label>
+                <input type="range" id="cpu-max" min="1200" max="2400" step="100" value="2400">
+                <label for="cpu-min">Frecuencia mínima <output id="cpu-min-out">0.90 GHz</output></label>
+                <input type="range" id="cpu-min" min="300" max="1800" step="100" value="900">
+              </div>
+
+              <button class="btn btn--primary" id="apply-cpu"><svg class="icon"><use href="#i-bolt"/></svg>Aplicar cambios</button>
+              <p class="card-note"><svg class="icon"><use href="#i-lock"/></svg> Si el kernel no expone <code>scaling_available_frequencies</code>, la app muestra solo lectura.</p>
+            </article>
+
+            <article class="card">
+              <div class="card-head">
+                <div><span class="eyebrow">Térmica</span><h3>Límites seguros</h3></div>
+                <span class="tag tag--warm">41.8 °C</span>
+              </div>
+              <div class="thermal">
+                <div class="thermal-row"><span>Umbral de aviso</span><b>48 °C</b></div>
+                <div class="meter meter--thin"><i style="width:58%"></i></div>
+                <div class="thermal-row"><span>Umbral de corte</span><b>55 °C</b></div>
+                <div class="meter meter--thin meter--warm"><i style="width:34%"></i></div>
+              </div>
+              <ul class="check-list check-list--tight">
+                <li><svg class="icon"><use href="#i-check"/></svg><span>Baja el máximo antes de llegar a 55 °C.</span></li>
+                <li><svg class="icon"><use href="#i-check"/></svg><span>No toca el thermal HAL del fabricante.</span></li>
+                <li><svg class="icon"><use href="#i-check"/></svg><span>Reprograma el estado anterior al reiniciar.</span></li>
+              </ul>
+              <button class="btn btn--ghost" id="cpu-safe"><svg class="icon"><use href="#i-shield"/></svg>Volver a seguro</button>
+            </article>
+          </div>
+
+          <article class="card">
+            <div class="card-head"><div><span class="eyebrow">Lectura</span><h3>Nodos detectados</h3></div><span class="tag tag--ok">8 núcleos</span></div>
+            <div class="code-table">
+              <div><code>/sys/devices/system/cpu/cpu0/cpufreq</code><span>scaling_governor · scaling_max_freq</span></div>
+              <div><code>/sys/devices/system/cpu/cpu4/cpufreq</code><span>scaling_cur_freq · cpuinfo_max_freq</span></div>
+              <div><code>/sys/class/thermal/thermal_zone0</code><span>temp · policy</span></div>
+            </div>
+          </article>
+        </section>
+
+        <section class="view" data-view="memory" aria-labelledby="memory-title">
+          <div class="view-head">
+            <span class="eyebrow">Memoria</span>
+            <h2 id="memory-title">Swap, ZRAM y precarga</h2>
+            <p>La meta es simple: audio y herramientas siempre residentes, RAM rápida para el primer plano. El resto se comprime en ZRAM.</p>
+          </div>
+
+          <div class="grid-2">
+            <article class="card">
+              <div class="card-head">
+                <div><span class="eyebrow">ZRAM</span><h3>Compresión en memoria</h3></div>
+                <span class="tag tag--accent">lz4</span>
+              </div>
+              <div class="slider-group">
+                <label for="zram-size">Tamaño ZRAM <output id="zram-size-out">3.0 GB</output></label>
+                <input type="range" id="zram-size" min="1" max="6" step="0.5" value="3">
+                <label for="swappiness-range">swappiness <output id="swappiness-out">100</output></label>
+                <input type="range" id="swappiness-range" min="0" max="200" step="5" value="100">
+              </div>
+              <ul class="toggle-list">
+                <li><div><b>Swap real en partición</b><small>Solo si el kernel soporta CONFIG_SWAP y hay root.</small></div><button class="toggle is-on" data-toggle aria-pressed="true"><span class="toggle-knob"></span></button></li>
+                <li><div><b>Compactar en segundo plano</b><small>vm.compaction_proactiveness = 20</small></div><button class="toggle is-on" data-toggle aria-pressed="true"><span class="toggle-knob"></span></button></li>
+                <li><div><b>Presión de caché</b><small>vfs_cache_pressure = 120</small></div><button class="toggle is-on" data-toggle aria-pressed="true"><span class="toggle-knob"></span></button></li>
+              </ul>
+              <p class="card-note"><svg class="icon"><use href="#i-lock"/></svg> ZRAM y <code>swapon</code> necesitan root. Sin root, la app solo muestra y recomienda.</p>
+            </article>
+
+            <article class="card">
+              <div class="card-head">
+                <div><span class="eyebrow">Cubase-style</span><h3>Precarga total</h3></div>
+                <span class="tag tag--accent">2.4 GB reservados</span>
+              </div>
+              <p class="muted">Las apps de audio se lanzan al inicio, se marcan como activas y se excluyen de la optimización de batería. El resto cede RAM.</p>
+              <ul class="app-list">
+                <li><span class="app-ico">AC</span><div><b>AcustiCall</b><small>prioridad audio · oom_score_adj -900</small></div><button class="toggle is-on" data-toggle aria-pressed="true"><span class="toggle-knob"></span></button></li>
+                <li><span class="app-ico app-ico--blue">LT</span><div><b>Control de Latencia</b><small>prioridad audio · oom_score_adj -900</small></div><button class="toggle is-on" data-toggle aria-pressed="true"><span class="toggle-knob"></span></button></li>
+                <li><span class="app-ico app-ico--mint">AC</span><div><b>AnyClaw</b><small>Linux embebido · prioridad media</small></div><button class="toggle is-on" data-toggle aria-pressed="true"><span class="toggle-knob"></span></button></li>
+                <li><span class="app-ico app-ico--warm">TX</span><div><b>Termux</b><small>solo bajo demanda · no anclar</small></div><button class="toggle" data-toggle aria-pressed="false"><span class="toggle-knob"></span></button></li>
+              </ul>
+              <button class="btn btn--primary" id="apply-memory"><svg class="icon"><use href="#i-layers"/></svg>Aplicar política</button>
+            </article>
+          </div>
+
+          <article class="card">
+            <div class="card-head"><div><span class="eyebrow">Comprobación</span><h3>Qué es realista</h3></div><span class="tag tag--info">Android 16</span></div>
+            <div class="code-table">
+              <div><code>am set-standby-bucket &lt;pkg&gt; active</code><span>Shizuku · evita que el sistema duerma la app</span></div>
+              <div><code>dumpsys deviceidle whitelist +&lt;pkg&gt;</code><span>Shizuku · excluye de Doze</span></div>
+              <div><code>oom_score_adj = -900</code><span>root · resiste al LMK (no es inmortal)</span></div>
+              <div><code>mkswap / swapon</code><span>root + kernel con CONFIG_SWAP</span></div>
+            </div>
+            <p class="card-note">Android no es un DAW: no hay un pool de memoria compartido. Se aproxima con precarga, prioridad y ZRAM. Un <code>mlock</code> total de otras apps no existe sin root.</p>
+          </article>
+        </section>
+
+        <section class="view" data-view="processes" aria-labelledby="processes-title">
+          <div class="view-head">
+            <span class="eyebrow">Procesos</span>
+            <h2 id="processes-title">Control de segundo plano</h2>
+            <p>Lista blanca y negra explícitas. Nunca se toca telefonía, sistema, audio ni la app en primer plano.</p>
+          </div>
+
+          <article class="card">
+            <div class="table-tools">
+              <div class="search"><svg class="icon"><use href="#i-search"/></svg><input id="process-search" type="search" placeholder="Filtrar por paquete o PID" autocomplete="off"></div>
+              <span class="tag" id="process-total">4 procesos</span>
+            </div>
+
+            <div class="table" id="process-table">
+              <div class="tr th"><span>Paquete</span><span>PID</span><span>RAM</span><span>CPU</span><span>Acción</span></div>
+              <div class="tr" data-name="com.miui.powerkeeper 1421"><span><b>com.miui.powerkeeper</b><small>servicio de energía</small></span><span>1421</span><span>84 MB</span><span>4.2%</span><button class="mini-btn" data-proc>Limitar</button></div>
+              <div class="tr" data-name="com.miui.analytics 2188"><span><b>com.miui.analytics</b><small>telemetría</small></span><span>2188</span><span>46 MB</span><span>1.8%</span><button class="mini-btn" data-proc>Limitar</button></div>
+              <div class="tr" data-name="com.xiaomi.mipicks 3310"><span><b>com.xiaomi.mipicks</b><small>contenido</small></span><span>3310</span><span>112 MB</span><span>0.9%</span><button class="mini-btn" data-proc>Limitar</button></div>
+              <div class="tr" data-name="com.termux 4021"><span><b>com.termux</b><small>shell · protegido</small></span><span>4021</span><span>68 MB</span><span>0.4%</span><span class="state state--ok">fija</span></div>
+            </div>
+          </article>
+
+          <div class="grid-2">
+            <article class="card">
+              <div class="card-head"><div><span class="eyebrow">Regla</span><h3>Nunca tocar</h3></div><span class="tag tag--ok">lista blanca</span></div>
+              <ul class="check-list">
+                <li><svg class="icon"><use href="#i-check"/></svg><span>Telefonía, IMS, Bluetooth y audio del sistema.</span></li>
+                <li><svg class="icon"><use href="#i-check"/></svg><span>AcustiCall, Latencia y cualquier app en primer plano.</span></li>
+                <li><svg class="icon"><use href="#i-check"/></svg><span>Launcher, teclado y servicios de accesibilidad.</span></li>
+              </ul>
+            </article>
+            <article class="card">
+              <div class="card-head"><div><span class="eyebrow">Motor</span><h3>Modo de aplicación</h3></div><span class="tag tag--info">Shizuku</span></div>
+              <p class="muted">Con Shizuku se usa <code>am set-standby-bucket</code> y <code>deviceidle whitelist</code>. Con root se añade <code>oom_score_adj</code> y límites de CPU.</p>
+              <div class="segmented segmented--wide" role="group" aria-label="Motor">
+                <button class="is-active">Suave</button>
+                <button>Equilibrado</button>
+                <button>Estricto</button>
+              </div>
+              <p class="card-note"><svg class="icon"><use href="#i-shield"/></svg> El modo estricto sigue excluyendo la lista blanca.</p>
+            </article>
+          </div>
+        </section>
+
+        <section class="view" data-view="integrations" aria-labelledby="integrations-title">
+          <div class="view-head">
+            <span class="eyebrow">Ecosistema</span>
+            <h2 id="integrations-title">Integraciones y bus local</h2>
+            <p>Un solo punto de control para Shizuku, root, Termux, AnyClaw y las apps nativas de audio y latencia.</p>
+          </div>
+
+          <div class="integration-grid integration-grid--large">
+            <button class="integration is-on" data-integration="shizuku"><span class="int-ico">SH</span><span class="int-copy"><b>Shizuku</b><small>Binder · shell uid 2000</small></span><span class="state state--ok">activo</span></button>
+            <button class="integration is-on" data-integration="kernelsu"><span class="int-ico int-ico--mint">KS</span><span class="int-copy"><b>KernelSU</b><small>su · uid 0</small></span><span class="state state--ok">activo</span></button>
+            <button class="integration" data-integration="ghostlock"><span class="int-ico int-ico--warm">GL</span><span class="int-copy"><b>GhostLock</b><small>externo · CVE-2026-43499</small></span><span class="state">externo</span></button>
+            <button class="integration is-on" data-integration="termux"><span class="int-ico int-ico--warm">TX</span><span class="int-copy"><b>Termux</b><small>shell compartida</small></span><span class="state state--ok">conectado</span></button>
+            <button class="integration is-on" data-integration="anyclaw"><span class="int-ico">AC</span><span class="int-copy"><b>AnyClaw</b><small>Linux embebido · localhost</small></span><span class="state state--ok">conectado</span></button>
+            <button class="integration is-on" data-integration="acusticall"><span class="int-ico int-ico--blue">AC</span><span class="int-copy"><b>AcustiCall</b><small>audio nativo</small></span><span class="state state--ok">anclada</span></button>
+            <button class="integration is-on" data-integration="latency"><span class="int-ico int-ico--blue">LT</span><span class="int-copy"><b>Control de Latencia</b><small>audio nativo</small></span><span class="state state--ok">anclada</span></button>
+            <button class="integration" data-integration="api"><span class="int-ico int-ico--mint">API</span><span class="int-copy"><b>API local</b><small>Unix socket · JSON</small></span><span class="state">vincular</span></button>
+          </div>
+
+          <div class="grid-2">
+            <article class="card">
+              <div class="card-head"><div><span class="eyebrow">Contrato</span><h3>Bus de control</h3></div><span class="tag tag--ok">localhost</span></div>
+              <p class="muted">Un socket local expone perfiles, métricas y órdenes. Termux y AnyClaw pueden leerlo sin abrir puertos a la red.</p>
+              <pre class="codeblock"><code>$ limboctl status
+perfil: estable
+cpu: 2020 MHz · schedutil
+zram: 1.1 / 3.0 GB
+audio: acusticall, latencia (fijas)
+
+$ limboctl profile audio-lock
+ok · watchdog armado</code></pre>
+            </article>
+            <article class="card">
+              <div class="card-head"><div><span class="eyebrow">Compatibilidad</span><h3>Reglas de convivencia</h3></div><span class="tag tag--info">sin peleas</span></div>
+              <ul class="check-list">
+                <li><svg class="icon"><use href="#i-check"/></svg><span>Un solo servicio en primer plano; las demás apps se enganchan por el bus.</span></li>
+                <li><svg class="icon"><use href="#i-check"/></svg><span>AnyClaw y Termux nunca se limitan mientras tengan tarea activa.</span></li>
+                <li><svg class="icon"><use href="#i-check"/></svg><span>AcustiCall y Latencia tienen prioridad de audio y exclusión de Doze.</span></li>
+                <li><svg class="icon"><use href="#i-check"/></svg><span>Si falta cualquier integración, el resto sigue funcionando.</span></li>
+              </ul>
+            </article>
+          </div>
+        </section>
+
+        <section class="view" data-view="settings" aria-labelledby="settings-title">
+          <div class="view-head">
+            <span class="eyebrow">Ajustes</span>
+            <h2 id="settings-title">Seguridad y capacidades</h2>
+            <p>La app debe ser útil con Shizuku y honesta sin root. Nada de promesas que el kernel no pueda cumplir.</p>
+          </div>
+
+          <div class="grid-2">
+            <article class="card">
+              <div class="card-head"><div><span class="eyebrow">Comportamiento</span><h3>Guardarraíles</h3></div><span class="tag tag--ok">watchdog</span></div>
+              <ul class="toggle-list">
+                <li><div><b>Restaurar al reiniciar</b><small>Si no se confirma, vuelve al perfil Estable.</small></div><button class="toggle is-on" data-toggle aria-pressed="true"><span class="toggle-knob"></span></button></li>
+                <li><div><b>Watchdog de 30 s</b><small>Revive el servicio y restaura governor si no responde.</small></div><button class="toggle is-on" data-toggle aria-pressed="true"><span class="toggle-knob"></span></button></li>
+                <li><div><b>Telemetría local</b><small>Solo registros en el dispositivo. Nada sale a la red.</small></div><button class="toggle is-on" data-toggle aria-pressed="true"><span class="toggle-knob"></span></button></li>
+                <li><div><b>Modo estricto de procesos</b><small>Más agresivo con el segundo plano; nunca con la lista blanca.</small></div><button class="toggle" data-toggle aria-pressed="false"><span class="toggle-knob"></span></button></li>
+              </ul>
+              <button class="btn btn--danger" id="reset-all"><svg class="icon"><use href="#i-power"/></svg>Restaurar todo</button>
+            </article>
+
+            <article class="card">
+              <div class="card-head"><div><span class="eyebrow">Realidad</span><h3>Qué permite cada vía</h3></div><span class="tag tag--info">honesto</span></div>
+              <div class="capability">
+                <div class="cap-row"><span class="cap-name">Shizuku</span><span class="cap-bar"><i style="width:42%"></i></span><span class="cap-note">shell</span></div>
+                <div class="cap-row"><span class="cap-name">Root</span><span class="cap-bar"><i style="width:100%"></i></span><span class="cap-note">total</span></div>
+                <div class="cap-row"><span class="cap-name">Swap</span><span class="cap-bar"><i style="width:76%"></i></span><span class="cap-note">root + kernel</span></div>
+                <div class="cap-row"><span class="cap-name">mlock otras apps</span><span class="cap-bar"><i style="width:58%"></i></span><span class="cap-note">limitado</span></div>
+              </div>
+              <ul class="check-list check-list--tight">
+                <li><svg class="icon"><use href="#i-check"/></svg><span><b>Shizuku</b> no es root: da identidad shell (uid 2000).</span></li>
+                <li><svg class="icon"><use href="#i-check"/></svg><span><b>CPU y swap</b> reales necesitan root y kernel compatible.</span></li>
+                <li><svg class="icon"><use href="#i-check"/></svg><span><b>GhostLock</b> es externo y da uid 0 temporal en kernels soportados.</span></li>
+              </ul>
+            </article>
+          </div>
+
+          <article class="card">
+            <div class="card-head"><div><span class="eyebrow">Transparencia</span><h3>Alcance de este prototipo</h3></div><span class="tag tag--warm">demo</span></div>
+            <p class="muted">Esta vista es una maqueta navegable del panel. No incluye el exploit, no pide root, no escribe sysfs y no modifica el teléfono. El APK real se construye aparte con Kotlin + Jetpack Compose y las APIs de Shizuku.</p>
+            <div class="chip-row">
+              <span class="chip">Kotlin</span>
+              <span class="chip">Compose</span>
+              <span class="chip">Shizuku API</span>
+              <span class="chip">libsu</span>
+              <span class="chip">ZRAM</span>
+            </div>
+          </article>
+        </section>
+      </div>
+
+      <footer class="foot">
+        <span>Limbo Core · consola de estabilidad</span>
+        <span>Prototipo web · no modifica el dispositivo</span>
+      </footer>
+    </main>
+  </div>
+
+  <nav class="tabbar" aria-label="Navegación móvil">
+    <button class="is-active" data-view="panel" aria-label="Panel"><svg class="icon"><use href="#i-panel"/></svg><span>Panel</span></button>
+    <button data-view="cpu" aria-label="CPU"><svg class="icon"><use href="#i-cpu"/></svg><span>CPU</span></button>
+    <button data-view="memory" aria-label="Memoria"><svg class="icon"><use href="#i-ram"/></svg><span>RAM</span></button>
+    <button data-view="processes" aria-label="Procesos"><svg class="icon"><use href="#i-list"/></svg><span>Procesos</span></button>
+    <button data-view="integrations" aria-label="Integraciones"><svg class="icon"><use href="#i-plug"/></svg><span>Enlaces</span></button>
+  </nav>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <script src="./app.js" defer></script>
+</body>
+</html>

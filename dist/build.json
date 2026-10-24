@@ -1,0 +1,10 @@
+{
+  "name": "limbo-core",
+  "version": "0.1.0",
+  "builtAt": "2026-10-24T14:24:24.839Z",
+  "assets": {
+    "index.html": "763f0bc83b91",
+    "styles.css": "b62bb4aad34a",
+    "app.js": "018a0d167a99"
+  }
+}
