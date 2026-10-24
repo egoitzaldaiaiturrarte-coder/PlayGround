@@ -16,3 +16,23 @@
 - 👤 [Explore the creator's projects](https://omgithub.com/egoitzaldaiaiturrarte-coder).
 - 🌍 [Create with OMGithub](https://omgithub.com).
 <!-- omgithub:readme:end -->
+
+## Limbo · APK Android
+
+APK release firmada lista para instalar:
+
+- Archivo: `Limbo/release/Limbo-1.0.0.apk`
+- Paquete: `com.limbo.tuner`
+- Versión: `1.0.0` (versionCode 1)
+- Android mínimo: 8.0 (API 29), objetivo API 35
+- Firma: v2, keystore `Limbo/app/keystore/limbo.keystore`
+- SHA-256: `6ce381fa241551f500782de6b0f93ab16b4fb0cc0b33831ce2ce4bd6861f9e2c`
+
+Recompilar:
+
+```bash
+cd Limbo
+./gradlew assembleRelease
+```
+
+La app usa Shizuku y `su` (KernelSU/Magisk) para leer y aplicar frecuencias de CPU. El panel web de Limbo Core sigue disponible en `web/` y `dist/`.

@@ -1,0 +1,25 @@
+
+screenshots/
+
+*.log
+
+*.pid
+
+.agents/
+
+.agentsweb/
+
+.omgithub-runtime/
+
+.opencode-ssh/
+
+.opencode-web/
+
+node_modules/
+
+# Android / Gradle
+Limbo/.gradle/
+Limbo/app/build/
+Limbo/local.properties
+.idea/
+*.iml
